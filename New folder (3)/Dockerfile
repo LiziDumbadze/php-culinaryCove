@@ -1,8 +1,15 @@
-# Use the official PHP Apache image
+# Use official PHP with Apache
 FROM php:8.2-apache
 
-# Copy project files into the container
+# Enable common PHP extensions (like MySQL if needed)
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+
+# Copy your project into the Apache web directory
 COPY . /var/www/html/
 
-# Expose port 80
+# Give proper permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
+
+# Expose web server port
 EXPOSE 80
